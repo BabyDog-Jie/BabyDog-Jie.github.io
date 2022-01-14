@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="zhangjunjie">
+    
+    <title>
+        
+            vue-cli3项目中引用Typescript |
+        
+        Baby Dog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"tridiamond.tech","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Keep writing and Keep coding."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Baby Dog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">vue-cli3项目中引用Typescript</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">zhangjunjie</span>
+                        
+                            <span class="author-label">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-01-15 00:31:42</span>
+        <span class="mobile">2022-01-15 00:31</span>
+    </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="1-安装配置"><a href="#1-安装配置" class="headerlink" title="1. 安装配置"></a>1. 安装配置</h1><h2 id="1-1-安装依赖"><a href="#1-1-安装依赖" class="headerlink" title="1.1 安装依赖"></a>1.1 安装依赖</h2><p>项目下安装依赖</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install typescript ts-loader vue-property-decorator vue-class-component --D<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol>
+<li>vue-class-component 扩展 vue 支持 typescript，将原有的 vue 语法通过声明的方式来支持 ts</li>
+<li>vue-property-decorator 基于 vue-class-component 扩展更多装饰器</li>
+</ol>
+<h2 id="1-2-配置tsconfig-json"><a href="#1-2-配置tsconfig-json" class="headerlink" title="1.2 配置tsconfig.json"></a>1.2 配置tsconfig.json</h2><p>根目录下创建tsconfig.json文件</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"compilerOptions"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"baseUrl"</span><span class="token operator">:</span> <span class="token string">"."</span><span class="token punctuation">,</span>
+    <span class="token property">"paths"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"@/*"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"*"</span><span class="token punctuation">,</span> <span class="token string">"src/*"</span><span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"jsx"</span><span class="token operator">:</span> <span class="token string">"preserve"</span><span class="token punctuation">,</span>
+    <span class="token property">"jsxFactory"</span><span class="token operator">:</span> <span class="token string">"h"</span><span class="token punctuation">,</span>
+    <span class="token property">"allowSyntheticDefaultImports"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"experimentalDecorators"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"allowJs"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"module"</span><span class="token operator">:</span> <span class="token string">"esnext"</span><span class="token punctuation">,</span>
+    <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"es5"</span><span class="token punctuation">,</span>
+    <span class="token property">"moduleResolution"</span><span class="token operator">:</span> <span class="token string">"node"</span><span class="token punctuation">,</span>
+    <span class="token property">"isolatedModules"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"lib"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"dom"</span><span class="token punctuation">,</span> <span class="token string">"es5"</span><span class="token punctuation">,</span> <span class="token string">"es6"</span><span class="token punctuation">,</span> <span class="token string">"es7"</span><span class="token punctuation">,</span> <span class="token string">"es2015.promise"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"sourceMap"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"pretty"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"typeRoots"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/types"</span><span class="token punctuation">]</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"include"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/**/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"exclude"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="1-3-类型声明文件"><a href="#1-3-类型声明文件" class="headerlink" title="1.3 类型声明文件"></a>1.3 类型声明文件</h2><p>src 中新建个 types 文件夹，types 中新建个文件 index.d.ts</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token string">"./global"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>types 中新建个文件 global.d.ts，这个就是让 ts 识别 vue 文件，不然 js 文件改成 ts 之后，引用的 vue 全是红色波浪线</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">declare</span> <span class="token keyword">module</span> <span class="token string">"*.vue"</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+  <span class="token keyword">export</span> <span class="token keyword">default</span> Vue<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="1-4-Vue-config-js配置"><a href="#1-4-Vue-config-js配置" class="headerlink" title="1.4 Vue.config.js配置"></a>1.4 Vue.config.js配置</h2><p>vue.config.js配置使用ts-loader来转换ts文件</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// ...</span>
+  <span class="token literal-property property">configureWebpack</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+		<span class="token literal-property property">resolve</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">extensions</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">".ts"</span><span class="token punctuation">,</span> <span class="token string">".tsx"</span><span class="token punctuation">,</span> <span class="token string">".js"</span><span class="token punctuation">,</span> <span class="token string">".json"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>    
+    <span class="token literal-property property">module</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>        
+      <span class="token literal-property property">rules</span><span class="token operator">:</span> <span class="token punctuation">[</span>    
+        <span class="token punctuation">&#123;</span>    
+          <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.tsx?$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>    
+          <span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'ts-loader'</span><span class="token punctuation">,</span>    
+          <span class="token literal-property property">exclude</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">node_modules</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>    
+          <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token literal-property property">appendTsSuffixTo</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.vue$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">]</span><span class="token punctuation">,</span>    
+          <span class="token punctuation">&#125;</span>    
+        <span class="token punctuation">&#125;</span>        
+      <span class="token punctuation">]</span>    
+    <span class="token punctuation">&#125;</span>    
+  <span class="token punctuation">&#125;</span>  
+    <span class="token comment">// ...</span>
+<span class="token punctuation">&#125;</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="1-5-tslint-json配置（选配）"><a href="#1-5-tslint-json配置（选配）" class="headerlink" title="1.5.tslint.json配置（选配）"></a>1.5.tslint.json配置（选配）</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+    <span class="token comment">// 禁止给类的构造函数的参数添加修饰符</span>
+    <span class="token property">"no-parameter-properties"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用 debugger</span>
+    <span class="token property">"no-debugger"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止行尾有空格</span>
+    <span class="token property">"no-trailing-whitespace"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止无用的表达式</span>
+    <span class="token property">"no-unused-expression"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 定义过的变量必须使用</span>
+    <span class="token property">"no-unused-variable"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 变量必须先定义后使用</span>
+    <span class="token property">"no-use-before-declare"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用 var</span>
+    <span class="token property">"no-var-keyword"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 必须使用 === 或 !==，禁止使用 == 或 !=，与 null 比较时除外</span>
+    <span class="token property">"triple-equals"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 指定类成员的排序规则</span>
+    <span class="token property">"member-ordering"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止将 this 赋值给其他变量，除非是解构赋值</span>
+    <span class="token property">"no-this-assignment"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token property">"allowed-names"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token string">"^self$"</span><span class="token punctuation">,</span>
+                <span class="token string">"^that$"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"allow-destructuring"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 必须使用箭头函数，除非是单独的函数声明或是命名函数</span>
+    <span class="token property">"only-arrow-functions"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"allow-declarations"</span><span class="token punctuation">,</span>
+        <span class="token string">"allow-named-functions"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止出现空代码块，允许 catch 是空代码块</span>
+    <span class="token property">"no-empty"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"allow-empty-catch"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止无用的类型断言</span>
+    <span class="token property">"no-unnecessary-type-assertion"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 使用 return; 而不是 return undefined;</span>
+    <span class="token property">"return-undefined"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止对 array 使用 for in 循环</span>
+    <span class="token property">"no-for-in-array"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"comment-format"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"check-space"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 单行注释格式化规则</span>
+    <span class="token comment">// 定义函数时如果用到了覆写，则必须将覆写的函数写到一起</span>
+    <span class="token property">"adjacent-overload-signatures"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止对函数的参数重新赋值</span>
+    <span class="token property">"no-parameter-reassignment"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// if 后面必须有 &#123;，除非是单行 if</span>
+    <span class="token property">"curly"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"ignore-same-line"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// for in 内部必须有 hasOwnProperty</span>
+    <span class="token property">"forin"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止在分支条件判断中有赋值操作</span>
+    <span class="token property">"no-conditional-assignment"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用 new 来生成 String, Number 或 Boolean</span>
+    <span class="token property">"no-construct"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止 super 在一个构造函数中出现两次</span>
+    <span class="token property">"no-duplicate-super"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止在 switch 语句中出现重复测试表达式的 case</span>
+    <span class="token property">"no-duplicate-switch-case"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止出现重复的变量定义或函数参数名</span>
+    <span class="token property">"no-duplicate-variable"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"check-parameters"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用 eval</span>
+    <span class="token property">"no-eval"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止对对象字面量进行类型断言（断言成 any 是允许的）</span>
+    <span class="token property">"no-object-literal-type-assertion"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止没必要的 return await</span>
+    <span class="token property">"no-return-await"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止在数组中出现连续的逗号，如 let foo = [,,]</span>
+    <span class="token property">"no-sparse-arrays"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止 throw 字符串，必须 throw 一个 Error 对象</span>
+    <span class="token property">"no-string-throw"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// switch 的 case 必须 return 或 break</span>
+    <span class="token property">"no-switch-case-fall-through"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 使用实例的方法时，必须 bind 到实例上</span>
+    <span class="token property">"no-unbound-method"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"ignore-static"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 使用 &#123; ...foo, bar: 1 &#125; 代替 Object.assign(&#123;&#125;, foo, &#123; bar: 1 &#125;)</span>
+    <span class="token comment">// 前者的类型检查更完善</span>
+    <span class="token property">"prefer-object-spread"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// parseInt 必须传入第二个参数</span>
+    <span class="token property">"radix"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 必须使用 isNaN(foo) 而不是 foo === NaN</span>
+    <span class="token property">"use-isnan"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">//</span>
+    <span class="token comment">//</span>
+    <span class="token comment">// 可维护性</span>
+    <span class="token comment">// 这些规则可以增加代码的可维护性</span>
+    <span class="token comment">//</span>
+    <span class="token comment">// 禁止函数的循环复杂度超过 20，https://en.wikipedia.org/wiki/Cyclomatic_complexity</span>
+    <span class="token property">"cyclomatic-complexity"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token number">20</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用废弃（被标识了 @deprecated）的 API</span>
+    <span class="token property">"deprecation"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 一个缩进必须用四个空格替代</span>
+    <span class="token property">"indent"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"spaces"</span><span class="token punctuation">,</span>
+        <span class="token number">4</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止出现重复的 import</span>
+    <span class="token property">"no-duplicate-imports"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止一个文件中出现多个相同的 namespace</span>
+    <span class="token property">"no-mergeable-namespace"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 文件类型必须时 utf-8</span>
+    <span class="token property">"encoding"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// import 语句中，关键字之间的间距必须是一个空格</span>
+    <span class="token property">"import-spacing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 接口可以 implement extend 和 merge</span>
+    <span class="token property">"interface-over-type-literal"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// new 后面只必须有一个空格</span>
+    <span class="token property">"new-parens"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 类型断言必须使用 as Type，禁止使用 &lt;Type></span>
+    <span class="token comment">// &lt;Type> 容易被理解为 jsx</span>
+    <span class="token property">"no-angle-bracket-type-assertion"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止连续超过三行空行</span>
+    <span class="token property">"no-consecutive-blank-lines"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token number">3</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用特殊空白符（比如全角空格）</span>
+    <span class="token property">"no-irregular-whitespace"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用 JSDoc，因为 TypeScirpt 已经包含了大部分功能</span>
+    <span class="token property">"no-redundant-jsdoc"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止使用三斜杠引入类型定义文件</span>
+    <span class="token property">"no-reference-import"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止变量定义时赋值为 undefined</span>
+    <span class="token property">"no-unnecessary-initializer"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 小数必须以 0. 开头，禁止以 . 开头，并且不能以 0 结尾</span>
+    <span class="token property">"number-literal-format"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 必须使用 a = &#123;b&#125; 而不是 a = &#123;b: b&#125;</span>
+    <span class="token property">"object-literal-shorthand"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 变量申明必须每行一个，for 循环的初始条件中除外</span>
+    <span class="token property">"one-variable-per-declaration"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"ignore-for-loop"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// if 后的 &#123; 禁止换行</span>
+    <span class="token property">"one-line"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 必须使用单引号，jsx 中必须使用双引号</span>
+    <span class="token property">"quotemark"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"single"</span><span class="token punctuation">,</span>
+        <span class="token string">"jsx-double"</span><span class="token punctuation">,</span>
+        <span class="token string">"avoid-template"</span><span class="token punctuation">,</span>
+        <span class="token string">"avoid-escape"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 行尾必须有分号</span>
+    <span class="token property">"semicolon"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"always"</span><span class="token punctuation">,</span>
+        <span class="token string">"ignore-interfaces"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 函数名前必须有空格</span>
+    <span class="token property">"space-before-function-paren"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token string">"asyncArrow"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 括号内首尾禁止有空格</span>
+    <span class="token property">"space-within-parens"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token number">0</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止 finally 内出现 return, continue, break, throw 等</span>
+    <span class="token comment">// finally 会比 catch 先执行</span>
+    <span class="token property">"no-unsafe-finally"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h1 id="2-vue-ts语法"><a href="#2-vue-ts语法" class="headerlink" title="2. vue-ts语法"></a>2. vue-ts语法</h1><p><code>TODO 后期添加</code></p>
+
+        </div>
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/post/20220113.html"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">熟悉使用Hexo并部署Github</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">zhangjunjie</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>
